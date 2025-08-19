@@ -1,0 +1,38 @@
+
+.columna {
+    width: 100%;
+    background: #fff;
+    padding: 20px;
+    margin: 20px 0  ;
+}
+
+.columna__arriba {
+    margin: 20px 0;
+}
+
+.titulo-principal {
+    color: #000;
+}
+
+.columna__abajo {
+    gap: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.columna__izquierda {
+    border: 1px solid rgba(0, 0, 0, .2);
+}
+
+.columna__derecha {
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+}
+
+.centro-control {
+    width: 160px;
+    height: max-content;
+}
