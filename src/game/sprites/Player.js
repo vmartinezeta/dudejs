@@ -11,7 +11,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.setOrigin(0);
         this.setScale(1);
         this.animar(scene);
-        this.play("frente");
+        this.play("right");
         this.running = false;
         this.dr = 6;
     }
@@ -42,26 +42,42 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     parar() {
-        this.running = false;
+        this.running = false;        
+    }
+
+    cambarVector(){
+        this.dr *=-1;
     }
 
     top() {
-        this.y -= this.dr;
+        if (this.dr > 0) {
+            this.cambarVector();
+        }
+        this.y += this.dr;
         this.play("frente");
     }
 
     right(){
+        if (this.dr <0) {
+            this.cambarVector();
+        }
         this.x += this.dr;
         this.play("right");
     }
 
     bottom() {
+        if (this.dr<0) {
+            this.cambarVector();
+        }
         this.y +=this.dr;
         this.play("frente");
     }
 
     left() {
-        this.x -= this.dr;
+        if (this.dr > 0) {
+            this.cambarVector();
+        }
+        this.x += this.dr;
         this.play("left");
     }
 

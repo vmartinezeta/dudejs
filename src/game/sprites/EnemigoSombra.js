@@ -11,13 +11,17 @@ export default class EnemigoSombra extends Player {
         this.callback = this.right;
     }
 
+    rotar() {
+        this.flipX = true;
+    }
+
     update() {
-        if (!this.running)return;
+        if (!this.running) return;
         if (this.x > this.limiteSuperior) {
             this.callback = this.left;
         } else if (this.x < this.limiteInferior) {
             this.callback = this.right;
-        }    
+        }
         this.callback();
     }
 }

@@ -20,10 +20,8 @@ export class Game extends Scene {
 
         this.player = new Player(this, 100, 200, "dude");
         this.enemigo = new EnemigoSombra(this, 50, 50, "dude");
-
         this.cuchillo = new Cuchillo(this, this.enemigo.x, this.enemigo.y, "platform");
-
-        this.homicidio = new Homicidio(this, [this.player, this.enemigo, this.cuchillo]);    
+        this.homicidio = new Homicidio(this, [this.player, this.enemigo, this.cuchillo]);
 
         this.physics.add.collider(this.cuchillo, this.player, this.acuchillando, null, this);
 
@@ -33,7 +31,7 @@ export class Game extends Scene {
     }
 
     acuchillando(cuchillo, enemigo) {
-        console.log(cuchillo, enemigo);
+        // console.log(cuchillo, enemigo);
     }
 
     changeScene() {

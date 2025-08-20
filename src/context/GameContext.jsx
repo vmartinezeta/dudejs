@@ -1,33 +1,33 @@
-import { createContext, useContext, useState } from 'react'
-import useSound from 'use-sound'
-import urlSound from "../audio/musica-fondo.mp3"
-import PropTypes from "prop-types"
+import { createContext, useContext, useState } from 'react';
+import useSound from 'use-sound';
+import urlSound from "../audio/musica-fondo.mp3";
 
 
-const GameContext = createContext()
+const GameContext = createContext();
+
 export const useGame = () => {
-    const context = useContext(GameContext)
+    const context = useContext(GameContext);
     if (!context) {
-        throw new TypeError()
+        throw new TypeError("Falta un contexto para ser utilizado");
     }
-    return context
+    return context;
 }
 
 
 export function GameProvider({ children }) {
-    const [play, { stop }] = useSound(urlSound,{loop:true})
-    const [toggleMusica, setToggleMusica] = useState(false)
+    const [play, { stop }] = useSound(urlSound,{loop:true});
+    const [toggleMusica, setToggleMusica] = useState(false);
 
 
     const onToggleMusica = () => {
-        const toggle = !toggleMusica
+        const toggle = !toggleMusica;
         if (toggle) {
-            play()
+            play();
         } else {
-            stop()
+            stop();
         }
 
-        setToggleMusica(toggle)
+        setToggleMusica(toggle);
     }
 
 
@@ -35,10 +35,5 @@ export function GameProvider({ children }) {
         onToggleMusica,
     }}>
         {children}
-    </GameContext.Provider>
-}
-
-
-GameProvider.propTypes = {
-    children: PropTypes.node
+    </GameContext.Provider>;
 }
