@@ -6,14 +6,11 @@ export default class EnemigoSombra extends Player {
         this.setTint(0xff0000);
         this.limiteInferior = 10;
         this.limiteSuperior = 800;
-        this.dr = 3;
+        this.cambio = 60;
         this.running = true;
         this.callback = this.right;
     }
 
-    rotar() {
-        this.flipX = true;
-    }
 
     update() {
         if (!this.running) return;
