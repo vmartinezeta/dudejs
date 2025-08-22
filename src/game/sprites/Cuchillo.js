@@ -1,8 +1,9 @@
 import Phaser from "phaser";
 
 export default class Cuchillo extends Phaser.GameObjects.Sprite {
-    constructor(scene, x, y, texture){
+    constructor(scene, x, y, texture, config){
         super(scene, x, y, texture);
+        this.config = config;
         this.setOrigin(0, 1/2);
         this.setScale(1/2);
         scene.add.existing(this);
@@ -16,9 +17,9 @@ export default class Cuchillo extends Phaser.GameObjects.Sprite {
         this.setTint(0xff0000);
     }
 
-    setIntervalo(li, ls) {
-        this.limiteInferior = li;
-        this.limiteSuperior = ls;
+    oscilar(desde, hasta) {
+        this.limiteInferior = desde;
+        this.limiteSuperior = hasta;
     }
 
     update() {

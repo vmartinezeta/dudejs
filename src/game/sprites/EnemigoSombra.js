@@ -11,6 +11,9 @@ export default class EnemigoSombra extends Player {
         this.callback = this.right;
     }
 
+    seguir(callback) {
+        this.callback = callback;
+    }
 
     update() {
         if (!this.running) return;

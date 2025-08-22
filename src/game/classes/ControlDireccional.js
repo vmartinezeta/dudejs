@@ -22,23 +22,23 @@ export class ControlDireccional {
     }
 
     top() {
-        return this.direccionales.find(d => d.vector.toString() === this.vector.toString() && d.id === 1) !== undefined;
+        return this.direccionales.find(({vector, id}) => vector.toString() === this.vector.toString() && id === 1) !== undefined;
     }
 
     right() {
-        return this.direccionales.find(d => d.vector.toString() === this.vector.toString() && d.id === 2) !== undefined;
+        return this.direccionales.find(({vector, id}) => vector.toString() === this.vector.toString() && id === 2) !== undefined;
     }
 
     bottom() {
-        return this.direccionales.find(d => d.vector.toString() === this.vector.toString() && d.id === 3) !== undefined;
+        return this.direccionales.find(({vector, id}) => vector.toString() === this.vector.toString() && id === 3) !== undefined;
     }
 
     left() {
-        return this.direccionales.find(d => d.vector.toString() === this.vector.toString() && d.id === 4) !== undefined;
+        return this.direccionales.find(({vector, id})=> vector.toString() === this.vector.toString() && id === 4) !== undefined;
     }
 
     toVectorArray() {
-        return this.direccionales.map(d => d.vector)
+        return this.direccionales.map(({vector}) => vector);
     }
 
     newInstance() {

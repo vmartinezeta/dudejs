@@ -1,10 +1,10 @@
 import { EventBus } from '../EventBus';
 import { Scene } from 'phaser';
 import Player from '../sprites/Player';
-import Homicidio from '../sprites/Homicidio';
 import EnemigoSombra from '../sprites/EnemigoSombra';
 import Cuchillo from '../sprites/Cuchillo';
-import Circuito from '../sprites/Circuito';
+import FuriaDude from '../sprites/FuriaDude';
+import CircuitoFuriaDude from '../sprites/CircuitoFuriaDude';
 
 
 export class Game extends Scene {
@@ -12,7 +12,7 @@ export class Game extends Scene {
         super('Game');
         this.player = null;
         this.enemigo = null;
-        this.homicidio = null;
+        this.furiaDude = null;
         this.cuchillo = null;
         this.circuito = null;
     }
@@ -20,16 +20,18 @@ export class Game extends Scene {
     create() {
         this.physics.world.setBounds(0, 0, 1024, 600);
 
-        this.circuito = new Circuito(this);
         const y = this.game.config.height
 
         this.player = new Player(this, 100, y-90, "dude");
         this.enemigo = new EnemigoSombra(this, 50, y-90, "dude");
         this.cuchillo = new Cuchillo(this, this.enemigo.x, this.enemigo.y, "platform");
-        this.homicidio = new Homicidio(this, [this.player, this.enemigo, this.cuchillo]);
+        this.furiaDude = new FuriaDude(this, [
+            this.player,
+            this.enemigo,
+            this.cuchillo
+        ]);
 
-        this.physics.add.collider(this.player, this.circuito);
-        this.physics.add.collider(this.enemigo, this.circuito);
+        this.circuito = new CircuitoFuriaDude(this, this.furiaDude);    
 
         this.input.mouse.disableContextMenu();
         this.keyboard = this.input.keyboard.createCursorKeys();
@@ -41,7 +43,7 @@ export class Game extends Scene {
     }
 
     update() {
-        this.homicidio.update();     
+        this.circuito.update();     
 
         if (this.keyboard.right.isDown){
             this.player.right();

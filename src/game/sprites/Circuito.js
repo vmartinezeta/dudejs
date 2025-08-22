@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import Segmento from "./Segmento";
 
 export default class Circuito extends Phaser.GameObjects.Group {
     constructor(scene) {
@@ -7,11 +8,8 @@ export default class Circuito extends Phaser.GameObjects.Group {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        const superficie = this.scene.physics.add.sprite(0, this.scene.game.config.height-40, "platform");
-        superficie.setOrigin(0);
-        superficie.setScale(2.5);
-        superficie.body.setImmovable(true);
-        superficie.body.setAllowGravity(false);
-        this.add(superficie);
-    }    
+        const suelo = new Segmento(scene, 0, scene.game.config.height-40, "platform");
+        suelo.setScale(2.5);
+        this.add(suelo);
+    }
 }
