@@ -4,7 +4,7 @@ export default class EnemigoSombra extends Player {
     constructor(scene, x, y, texture) {
         super(scene,x , y, texture);
         this.setTint(0xff0000);
-        this.limiteInferior = 10;
+        this.limiteInferior = 100;
         this.limiteSuperior = 800;
         this.cambio = 60;
         this.running = true;

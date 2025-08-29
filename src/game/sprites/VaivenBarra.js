@@ -1,4 +1,3 @@
-import Phaser from "phaser";
 import Segmento from "./Segmento";
 
 export default class VaivenBarra extends Segmento {

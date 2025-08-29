@@ -8,21 +8,24 @@ export default class Player extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture);
         this.scene = scene;
         this.texture = texture;
-        scene.add.existing(this);
-        scene.physics.add.existing(this);
-        this.body.setCollideWorldBounds(true);
         this.setOrigin(0);
         this.setScale(1);
         this.animar(scene);
         this.play("right");
         this.running = false;
+        this.modulo = 100;
+        this.saltos = 0;
+        this.anterior = new Punto(x, y);
+
         this.control = new ControlDireccional([
             new Direccional(1, "top", new Punto(0, -1)),
             new Direccional(2, "right", new Punto(1, 0)),
             new Direccional(3, "bottom", new Punto(0, 1)),
             new Direccional(4, "left", new Punto(-1, 0)),
         ], new Punto(1, 0));
-        this.cambio = 100;
+        scene.add.existing(this);
+        scene.physics.add.existing(this);
+        this.body.setCollideWorldBounds(true);
     }
 
     actual() {
@@ -53,16 +56,19 @@ export default class Player extends Phaser.GameObjects.Sprite {
     parar() {
         this.running = false;
         this.control.setVector(new Punto(0));
+        this.body.setVelocity(0);
     }
 
-    mover(vector, cambio) {
-        const modulo = cambio || this.cambio;
-        this.body.setVelocity(modulo * vector.x, modulo * vector.y);
+    mover(vector, modulo) {
+        const moduloFinal = modulo || this.modulo;
+        this.body.setVelocity(moduloFinal * vector.x, moduloFinal * vector.y);
     }
 
-    top() {
+    top(modulo) {
+        this.saltos++;
         const vector = this.control.fromInt(1);
-        this.mover(vector, 330);
+        const moduloFinal = 330 || modulo;
+        this.mover(vector, moduloFinal);
         this.play("frente");
     }
 
@@ -82,6 +88,26 @@ export default class Player extends Phaser.GameObjects.Sprite {
         const vector = this.control.fromInt(4);
         this.mover(vector);
         this.play("left");
+    }
+
+    actual() {
+        return new Punto(this.x, this.y);
+    }
+
+    puedeSaltar() {
+        return this.body.touching.down && this.saltos === 0;
+    }
+
+    puedeHacerDoubleSalto() {
+        return this.saltos===1 && this.body.touching.none;
+    }
+
+    finalizoSaltos() {
+        return this.saltos > 0 && this.body.touching.down;
+    }
+
+    resetSaltos() {
+        this.saltos = 0;
     }
 
 }

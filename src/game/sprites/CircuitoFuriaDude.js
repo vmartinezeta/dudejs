@@ -26,9 +26,15 @@ export default class CircuitoFuriaDude extends Circuito {
         this.add(bottom);
         this.movible = new VaivenBarra(scene, 500, 200, "platform", 50);
         this.add(this.movible);
+
+        scene.physics.add.collider(furiaDude.player, starArray, this.recoger, null, this);
         scene.physics.add.collider(starArray, this);
         scene.physics.add.collider(furiaDude.player, this);
         scene.physics.add.collider(furiaDude.enemigo, this);
+    }
+
+    recoger(_, start) {
+        this.remove(start, true, true);
     }
 
     update() {
