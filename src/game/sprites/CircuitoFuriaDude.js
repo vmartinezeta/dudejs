@@ -2,10 +2,13 @@ import Circuito from "./Circuito";
 import Phaser from 'phaser';
 import VaivenBarra from "./VaivenBarra";
 import Segmento from "./Segmento";
+import Suelo from "./Suelo";
+import Roca from "./Roca";
 
 export default class CircuitoFuriaDude extends Circuito {
     constructor(scene, furiaDude) {
         super(scene);
+        this.scene = scene;
         this.furiaDude = furiaDude;
 
         const starArray = this.createFromConfig({
@@ -29,8 +32,21 @@ export default class CircuitoFuriaDude extends Circuito {
 
         scene.physics.add.collider(furiaDude.player, starArray, this.recoger, null, this);
         scene.physics.add.collider(starArray, this);
-        scene.physics.add.collider(furiaDude.player, this);
+        scene.physics.add.collider(furiaDude.player, this, this.lanzarRoca, null, this);
         scene.physics.add.collider(furiaDude.enemigo, this);
+        scene.physics.add.collider(furiaDude, this, this.destruirRoca, null, this);
+    }
+
+    destruirRoca(roca) {
+        if (roca instanceof Roca) {
+            this.furiaDude.eliminar(roca);
+        }
+    }
+
+    lanzarRoca(_, segmento) {
+        if (segmento instanceof Suelo && !this.furiaDude.lanzandoRoca && this.furiaDude.fueraAlcance()) {
+            this.furiaDude.empezarLanzamiento();
+        }
     }
 
     recoger(_, start) {
@@ -39,6 +55,6 @@ export default class CircuitoFuriaDude extends Circuito {
 
     update() {
         this.movible.update();
-        this.furiaDude.update();
+        this.furiaDude.update();       
     }
 }

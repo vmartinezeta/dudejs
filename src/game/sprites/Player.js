@@ -16,7 +16,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.modulo = 100;
         this.saltos = 0;
         this.anterior = new Punto(x, y);
-
         this.control = new ControlDireccional([
             new Direccional(1, "top", new Punto(0, -1)),
             new Direccional(2, "right", new Punto(1, 0)),
@@ -57,6 +56,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.running = false;
         this.control.setVector(new Punto(0));
         this.body.setVelocity(0);
+        this.body.setEnable(false);
     }
 
     mover(vector, modulo) {

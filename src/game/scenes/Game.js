@@ -23,12 +23,7 @@ export class Game extends Scene {
         this.player = new Player(this, 100, 300, "dude");
         this.enemigo = new EnemigoSombra(this, 100, y - 90, "dude");
         this.cuchillo = new Cuchillo(this, this.enemigo.x, this.enemigo.y, "platform");
-        this.furiaDude = new FuriaDude(this, [
-            this.player,
-            this.enemigo,
-            this.cuchillo
-        ]);
-
+        this.furiaDude = new FuriaDude(this, this.player, this.enemigo, this.cuchillo);
         this.circuito = new CircuitoFuriaDude(this, this.furiaDude);
 
         this.input.mouse.disableContextMenu();

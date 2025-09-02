@@ -1,16 +1,43 @@
 import Phaser from "phaser";
+import Roca from "./Roca";
 
 export default class FuriaDude extends Phaser.GameObjects.Group {
-    constructor(scene, children) {
-        super(scene, children);
-        this.player = children[0];
-        this.enemigo = children[1];
-        this.cuchillo = children[2];
+    constructor(scene, player, enemigo, cuchillo) {
+        super(scene);
+        this.scene = scene;
+        this.player = player;
+        this.enemigo = enemigo;
+        this.cuchillo = cuchillo;
+        this.addMultiple([player, enemigo, cuchillo]);
         this.cuchillo.oscilar(this.enemigo.x - 100, this.enemigo.x + 100);
         this.cuchillo.y = this.enemigo.y + this.enemigo.height / 2;
         this.cuchillo.x = this.enemigo.x;
         this.deltaX0 = this.getSeparacion();
         this.deltaX = this.deltaX0;
+        this.lanzandoRoca = null;
+        this.roca = null;
+    }
+
+    empezarLanzamiento() {
+        if (!this.lanzandoRoca) {
+            this.lanzandoRoca = this.scene.time.delayedCall(1000, this.lanzarRoca, [], this);
+        }
+    }
+
+    eliminar(child) {
+        this.remove(child, true, true);
+        this.roca = null;
+    }
+
+    fueraAlcance() {
+        return !this.cuchillo.visible && (this.player.control.right() && this.player.x > this.enemigo.x
+        || this.player.control.left() && this.player.x < this.enemigo.x);
+    }
+
+    lanzarRoca() {
+        if (this.roca) return;
+        this.roca = new Roca(this.scene, this.enemigo.x, this.enemigo.y+20, "roca", this.enemigo.control.vector);
+        this.add(this.roca);
     }
 
     acuchillar() {
@@ -53,6 +80,14 @@ export default class FuriaDude extends Phaser.GameObjects.Group {
     }
 
     update() {
+        if (this.lanzandoRoca&&!this.player.body.touching.down) {
+            this.scene.time.removeEvent(this.lanzandoRoca);
+            this.lanzandoRoca = null;
+        }
+        if (this.roca) {
+            this.roca.update();
+        }
+        
         this.enemigo.update();
         this.actualizarSeparacion();
 
@@ -60,15 +95,16 @@ export default class FuriaDude extends Phaser.GameObjects.Group {
 
         if (!this.cuchillo.visible && !this.enemigo.running) {
             this.enemigo.running = true;
+            this.enemigo.body.setEnable(true);
         }
 
         if (!this.cuchillo.visible) {
             return;
         }
-        
+
         this.seguirPlayer();
 
-        if (this.enemigo.running) {            
+        if (this.enemigo.running) {
             this.enemigo.parar();
             this.cuchillo.x = this.enemigo.x;
             this.cuchillo.y = this.enemigo.y + this.enemigo.height / 2;

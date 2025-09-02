@@ -9,6 +9,8 @@ export default class EnemigoSombra extends Player {
         this.cambio = 60;
         this.running = true;
         this.callback = this.right;
+        this.body.immovable = true;
+        this.body.allowGravity = false;
     }
 
     seguir(callback) {
