@@ -4,6 +4,7 @@ import VaivenBarra from "./VaivenBarra";
 import Segmento from "./Segmento";
 import Suelo from "./Suelo";
 import Roca from "./Roca";
+import Cuchillo from "./Cuchillo";
 
 export default class CircuitoFuriaDude extends Circuito {
     constructor(scene, furiaDude) {
@@ -35,11 +36,32 @@ export default class CircuitoFuriaDude extends Circuito {
         scene.physics.add.collider(furiaDude.player, this, this.lanzarRoca, null, this);
         scene.physics.add.collider(furiaDude.enemigo, this);
         scene.physics.add.collider(furiaDude, this, this.destruirRoca, null, this);
+        scene.physics.add.collider(furiaDude.player, furiaDude, this.golpear, null, this);
     }
 
-    destruirRoca(roca) {
-        if (roca instanceof Roca) {
-            this.furiaDude.eliminar(roca);
+    golpear(player, sprite) {
+        if (sprite instanceof Roca) {
+            this.destruirRoca(sprite);
+            if (player.vida>0) {
+                player.vida --;
+            }            
+        } else if (sprite instanceof Cuchillo) {
+            if (player.vida>0) {
+                player.vida --;
+            }
+        }
+
+        if (player.vida === 0) {
+            this.furiaDude.eliminar(player);
+            this.furiaDude.player = null;
+            this.furiaDude.cuchillo.visible = false;
+        }
+    }
+
+    destruirRoca(sprite) {
+        if (sprite instanceof Roca) {
+            this.furiaDude.eliminar(sprite);
+            this.furiaDude.roca = null;
         }
     }
 

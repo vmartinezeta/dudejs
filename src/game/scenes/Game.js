@@ -15,6 +15,7 @@ export class Game extends Scene {
         this.furiaDude = null;
         this.cuchillo = null;
         this.circuito = null;
+        this.upPresionada = false;
     }
 
     create() {
@@ -34,6 +35,7 @@ export class Game extends Scene {
             S: Phaser.Input.Keyboard.KeyCodes.S,
             D: Phaser.Input.Keyboard.KeyCodes.D
         });
+
         EventBus.emit('current-scene-ready', this);
     }
 
@@ -44,18 +46,30 @@ export class Game extends Scene {
     update() {
         this.circuito.update();
 
+        if (!this.furiaDude.player) {
+              this.scene.start("GameOver");
+              return;
+        }
+
         if (this.keyboard.right.isDown) {
             this.player.right();
         } else if (this.keyboard.left.isDown) {
             this.player.left();
         }
 
-        if (this.keyboard.up.isDown && this.player.body.touching.down && this.player.saltos === 0) {
+        if (this.upPresionada && this.keyboard.up.isUp) {
+            this.player.habilitarDoubleSalto();
+            this.upPresionada = false;
+        }
+
+        if (!this.upPresionada&&this.keyboard.up.isDown && this.player.puedeSaltar()) {
             this.player.top();
-        } else if (this.keys.D.isDown && this.player.puedeHacerDoubleSalto()) {
+            this.upPresionada = true;
+        } else if (!this.upPresionada && this.keyboard.up.isDown && this.player.puedeHacerDoubleSalto()) {
             this.player.top(50);
-        } else if (this.player.finalizoSaltos()){
-            this.player.resetSaltos();
+            this.upPresionada = true;
+        } else if (this.player.tieneSaltos()){
+            this.player.inhabilitarSaltos();
         }
     }
 }

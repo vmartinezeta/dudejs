@@ -15,6 +15,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.running = false;
         this.modulo = 100;
         this.saltos = 0;
+        this.vida = 10;
         this.anterior = new Punto(x, y);
         this.control = new ControlDireccional([
             new Direccional(1, "top", new Punto(0, -1)),
@@ -65,7 +66,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     top(modulo) {
-        this.saltos++;
+        if (!this.body) return;
         const vector = this.control.fromInt(1);
         const moduloFinal = 330 || modulo;
         this.mover(vector, moduloFinal);
@@ -73,18 +74,21 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     right() {
+        if (!this.body) return;
         const vector = this.control.fromInt(2);
         this.mover(vector);
         this.play("right");
     }
 
     bottom() {
+        if (!this.body) return;
         const vector = this.control.fromInt(3);
         this.mover(vector);
         this.play("frente");
     }
 
     left() {
+        if (!this.body) return;
         const vector = this.control.fromInt(4);
         this.mover(vector);
         this.play("left");
@@ -95,19 +99,23 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     puedeSaltar() {
-        return this.body.touching.down && this.saltos === 0;
+        return this.body && this.body.touching.down && this.saltos === 0;
     }
 
     puedeHacerDoubleSalto() {
-        return this.saltos===1 && this.body.touching.none;
+        return this.saltos===1 && this.body && this.body.touching.none;
     }
 
-    finalizoSaltos() {
-        return this.saltos > 0 && this.body.touching.down;
+    tieneSaltos() {
+        return this.saltos === 2 || (this.body && this.body.touching.down);
     }
 
-    resetSaltos() {
+    inhabilitarSaltos() {
         this.saltos = 0;
+    }
+
+    habilitarDoubleSalto() {
+        this.saltos ++;
     }
 
 }

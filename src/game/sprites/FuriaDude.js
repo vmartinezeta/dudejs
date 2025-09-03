@@ -26,7 +26,6 @@ export default class FuriaDude extends Phaser.GameObjects.Group {
 
     eliminar(child) {
         this.remove(child, true, true);
-        this.roca = null;
     }
 
     fueraAlcance() {
@@ -80,6 +79,8 @@ export default class FuriaDude extends Phaser.GameObjects.Group {
     }
 
     update() {
+        if (!this.player) return;
+        
         if (this.lanzandoRoca&&!this.player.body.touching.down) {
             this.scene.time.removeEvent(this.lanzandoRoca);
             this.lanzandoRoca = null;
